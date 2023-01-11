@@ -28,3 +28,9 @@ def remove(note_id):
     db.session.commit()
 
     return redirect(url_for('views.home'))
+
+@views.route('/dashboard/', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+
+    return render_template("dashboard.html", user=current_user)
