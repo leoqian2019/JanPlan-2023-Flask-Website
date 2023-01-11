@@ -1,0 +1,15 @@
+
+{% extends "base.html" %}
+
+
+{% block content %}
+<div id = "chart1"></div>
+<p> some text goes here. </p>
+
+<!--plotly CDN-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+    var graphs = {{ graphJSON | safe}};
+    Plotly.plot("chart1", graphs,{});
+</script>
+{% endblock %}
