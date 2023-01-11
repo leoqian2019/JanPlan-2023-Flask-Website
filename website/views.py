@@ -16,9 +16,7 @@ def home():
 
         db.session.add(new_note)
         db.session.commit()
-
-    #notes = list(db.session.query(Note).all())
-    return render_template("home.html", user=current_user, active_page='home')
+    return render_template("homepage.html", user=current_user, active_page='home')
 
 
 @views.route('/remove/<string:note_id>', methods=['GET'])
@@ -32,5 +30,4 @@ def remove(note_id):
 @views.route('/dashboard/', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-
     return render_template("dashboard.html", user=current_user)

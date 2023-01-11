@@ -18,7 +18,7 @@ def login():
         if user:
             if password == user.password:
                 login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                return redirect(url_for('views.dashboard'))
             else:
                 return "password is incorrect"
         else:

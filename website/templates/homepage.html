@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Corona Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor.bundle.base.css') }}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-jvectormap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flag-icon.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}"/>
+</head>
+<body>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="row w-100 m-0">
+            <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
+                <div class="container-lg">
+                    <h1 class="display-1">Textbook Exchange
+                        <small class="text-muted"> A smart solution to get your textbook for free </small>
+                    </h1>
+                    <nav class="nav justify-content-center">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">
+                            <button type="button" class="btn btn-outline-secondary btn-lg"><h2>Login</h2></button>
+                        </a>
+                        <a class="nav-link" href="{{ url_for('auth.signup') }}">
+                            <button type="button" class="btn btn-outline-secondary btn-lg"><h2>Sign Up</h2></button>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- row ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="{{ url_for('static', filename='js/vendor.bundle.base.js') }}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/progressbar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-jvectormap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-jvectormap-world-mill-en.js') }}"></script>
+<script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="{{ url_for('static', filename='js/off-canvas.js') }}"></script>
+<script src="{{ url_for('static', filename='js/hoverable-collapse.js') }}"></script>
+<script src="{{ url_for('static', filename='js/misc.js') }}"></script>
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+<script src="{{ url_for('static', filename='js/todolist.js') }}"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<!-- End custom js for this page -->
+</body>
+</html>
