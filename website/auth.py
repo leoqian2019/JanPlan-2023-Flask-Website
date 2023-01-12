@@ -7,17 +7,19 @@ from flask_login import login_required, current_user, login_user, logout_user
 
 auth = Blueprint('auth', __name__)
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/login/', methods=['GET', 'POST'])
 def login():
-
-    if request.method == 'POST':
+    if current_user.is_authenticated:
+        return redirect(url_for('views.dashboard'))
+    elif request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+        rememberMe = request.form.get("rememberMe") == 'on'
 
         user = User.query.filter_by(email=email).first()
         if user:
             if password == user.password:
-                login_user(user, remember=True)
+                login_user(user, remember=rememberMe)
                 return redirect(url_for('views.dashboard'))
             else:
                 return "password is incorrect"
@@ -27,7 +29,7 @@ def login():
     return render_template("login.html", user=current_user, active_page='login')
 
 
-@auth.route('/logout', methods=['GET'])
+@auth.route('/logout/', methods=['GET'])
 @login_required
 def logout():
     
@@ -38,10 +40,11 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
-@auth.route('/signup', methods=['GET', 'POST'])
+@auth.route('/signup/', methods=['GET', 'POST'])
 def signup():
-
-    if request.method == 'POST':
+    if current_user.is_authenticated:
+        return redirect(url_for('views.dashboard'))
+    elif request.method == 'POST':
         email = request.form.get('email')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
