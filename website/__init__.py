@@ -1,24 +1,20 @@
-
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
-
 def create_app():
-
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret'
-    # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("postgres", "postgresql", 1)
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
     db.init_app(app)
-
 
     from .models import Note, User
     create_database(app)
@@ -38,14 +34,16 @@ def create_app():
 
     return app
 
+
 def create_database(app):
-    #if not path.exists('website/' + DB_NAME):
+    # if not path.exists('website/' + DB_NAME):
     with app.app_context():
         db.create_all()
     print('Created Database!')
 
+
 def drop_database(app):
-    #if path.exists('website/' + DB_NAME):
+    # if path.exists('website/' + DB_NAME):
     with app.app_context():
         db.session.remove()
         db.drop_all()
