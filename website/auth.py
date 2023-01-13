@@ -1,11 +1,11 @@
-
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from . import db
 from .models import Note, User
 from flask_login import login_required, current_user, login_user, logout_user
-
+import re
 
 auth = Blueprint('auth', __name__)
+
 
 @auth.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -32,10 +32,9 @@ def login():
 @auth.route('/logout/', methods=['GET'])
 @login_required
 def logout():
-    
     current_user.permission = 1
     db.session.commit()
-    
+
     logout_user()
     return redirect(url_for('auth.login'))
 
@@ -50,8 +49,12 @@ def signup():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
+        user_name_format_match = re.match(r'^[A-Za-z0-9]{3,}$', user_name)
+        email_format_match = re.match(r'^.+@colby.edu$', email)
+        password_format_match = re.match(r'.{6,}', password1)
+
         # user password code from Moodle, this one is quick
-        if password1 == password2 and len(email) > 6:
+        if password1 == password2 and user_name_format_match and email_format_match and password_format_match:
             user = User.query.filter_by(email=email).first()
             if user:
                 return "User already exists"
@@ -65,6 +68,12 @@ def signup():
                 db.session.add(new_user)
                 db.session.commit()
                 return redirect(url_for('views.dashboard'))
+        elif not user_name_format_match:
+            return "Username too short or doesn't match the format, please try again"
+        elif not email_format_match:
+            return "Not colby email, please try again"
+        elif not password_format_match:
+            return "Password too short or doesn't match the format, please try again"
         else:
             return "Password doesn't match, please try again"
 
