@@ -45,6 +45,7 @@ def signup():
     if current_user.is_authenticated:
         return redirect(url_for('views.dashboard'))
     elif request.method == 'POST':
+        user_name = request.form.get("userName")
         email = request.form.get('email')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
@@ -52,19 +53,19 @@ def signup():
         # user password code from Moodle, this one is quick
         if password1 == password2 and len(email) > 6:
             user = User.query.filter_by(email=email).first()
-
             if user:
                 return "User already exists"
-            else: 
-
+            else:
                 if email == "gru@minions.org":
                     permission = 0
                 else:
                     permission = 1
 
-                new_user = User(email=email, password=password1, permission=permission)
+                new_user = User(email=email, password=password1, permission=permission, user_name=user_name)
                 db.session.add(new_user)
                 db.session.commit()
-                return redirect(url_for('views.home'))
+                return redirect(url_for('views.dashboard'))
+        else:
+            return "Password doesn't match, please try again"
 
     return render_template("signup.html", user=current_user, active_page='signup')
