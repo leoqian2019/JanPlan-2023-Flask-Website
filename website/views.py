@@ -21,7 +21,10 @@ def home():
 @views.route('/dashboard/', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template("dashboard.html", user=current_user)
+    return render_template("dashboard.html", user=current_user, active_page="dashboard")
 
 
-
+@views.route('/setting/', methods=['GET', 'POST'])
+@login_required
+def setting():
+    return render_template("setting.html", user=current_user, active_page="setting")
