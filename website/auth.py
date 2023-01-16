@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from . import db
-from .models import Note, User
+from .models import Book, User
 from flask_login import login_required, current_user, login_user, logout_user
 import re
 
@@ -14,12 +14,12 @@ def login():
     elif request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        rememberMe = request.form.get("rememberMe") == 'on'
+        remember_me = request.form.get("rememberMe") == 'on'
 
         user = User.query.filter_by(email=email).first()
         if user:
             if password == user.password:
-                login_user(user, remember=rememberMe)
+                login_user(user, remember=remember_me)
                 return redirect(url_for('views.dashboard'))
             else:
                 return "password is incorrect"

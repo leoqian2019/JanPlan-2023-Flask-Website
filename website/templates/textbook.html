@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            {% if textbook_page == "pair" %}
+                <a class="nav-link active" aria-current="page" href="{{ url_for('views.textbook') }}">Textbook
+                    Pairing</a>
+            {% else %}
+                <a class="nav-link" aria-current="page" href="{{ url_for('views.textbook') }}">Textbook Pairing</a>
+            {% endif %}
+        </li>
+        <li class="nav-item">
+            {% if textbook_page == "received" %}
+                <a class="nav-link active" href="{{ url_for('views.textbook_received') }}">Received Textbook</a>
+            {% else %}
+                <a class="nav-link" href="{{ url_for('views.textbook_received') }}">Received Textbook</a>
+            {% endif %}
+        </li>
+    </ul>
+
+    <div class="card col-lg-4 mx-right">
+        {% if textbook_page == "pair" %}
+        <div class="card-body px-5 py-5">
+            <h3 class="card-title text-left mb-3">Add textbook you have</h3>
+            <form method="post">
+                <div class="form-group">
+                    <label>10/13 Digit ISBN</label>
+                    <input type="text" class="form-control p_input" pattern="^[0-9]{10,13}$"
+                           title="Please enter a 10/13 digit isbn number" name="isbn">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-block enter-btn" name="textbook-user-has">Submit</button>
+                </div>
+            </form>
+            <div class="form-check">
+                {% for book in user.books %}
+                    {% if book.owning_status == 1 and book.receiving_status == 0 %}
+                        <input class="form-check-input" type="checkbox" value="{{ book.id }}" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            {{ book.isbn }}
+                        </label>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card-body px-5 py-5">
+            <h3 class="card-title text-left mb-3">Add textbook you want</h3>
+            <form method="post">
+                <div class="form-group">
+                    <label>10/13 Digit ISBN</label>
+                    <input type="text" class="form-control p_input" pattern="^[0-9]{10,13}$"
+                           title="Please enter a 10/13 digit isbn number" name="isbn">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-block enter-btn" name="textbook_user_want">Submit</button>
+                </div>
+            </form>
+            <div class="form-check">
+                {% for book in user.books %}
+                    {% if book.owning_status == 0 and book.receiving_status == 0 %}
+                        <input class="form-check-input" type="checkbox" value="{{ book.id }}" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            {{ book.isbn }}
+                        </label>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+
+        {% endif %}
+    </div>
+{% endblock %}
