@@ -25,7 +25,7 @@
                 <h3 class="card-title text-left mb-3">Add textbook you have</h3>
                 <form method="post">
                     <div class="form-group">
-                        <label>10/13 Digit ISBN</label>
+                        <label>10/13 Digit ISBN (no dash)</label>
                         <input type="text" class="form-control p_input" pattern="^([0-9]{10}|[0-9]{13})$"
                                title="Please enter a 10/13 digit isbn number" name="isbn">
                     </div>
@@ -41,9 +41,15 @@
                             {% if book.owning_status == 1 and book.receiving_status == 0 %}
                                 <input class="form-check-input" type="checkbox" value="{{ book.id }}"
                                        name="textbook-own">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    {{ book.isbn }}
-                                </label>
+                                {% if find_book_title_with_isbn(book.isbn) != None %}
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        {{ book.isbn+": "+find_book_title_with_isbn(book.isbn) }}
+                                    </label>
+                                {% else %}
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        {{ book.isbn }}
+                                    </label>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
 
@@ -67,7 +73,7 @@
                 <h3 class="card-title text-left mb-3">Add textbook you want</h3>
                 <form method="post">
                     <div class="form-group">
-                        <label>10/13 Digit ISBN</label>
+                        <label>10/13 Digit ISBN (no dash)</label>
                         <input type="text" class="form-control p_input" pattern="^([0-9]{10}|[0-9]{13})$"
                                title="Please enter a 10/13 digit isbn number" name="isbn">
                     </div>
@@ -83,8 +89,15 @@
                             {% if book.owning_status == 0 and book.receiving_status == 0 %}
                                 <input class="form-check-input" type="checkbox" value="{{ book.id }}"
                                        name="textbook-own">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    {{ book.isbn }}
+                                {% if find_book_title_with_isbn(book.isbn) != None %}
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        {{ book.isbn+": "+find_book_title_with_isbn(book.isbn) }}
+                                    </label>
+                                {% else %}
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        {{ book.isbn }}
+                                    </label>
+                                {% endif %}
                                 </label>
                             {% endif %}
                         {% endfor %}
@@ -99,7 +112,32 @@
                 </form>
             </div>
         {% else %}
-
+            <form method="post">
+                <div class="form-check">
+                    {% for book in user.books %}
+                        {% if book.receiving_status == 1 %}
+                            <input class="form-check-input" type="checkbox" value="{{ book.id }}"
+                                   name="textbook-own">
+                            {% if find_book_title_with_isbn(book.isbn) != None %}
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{ book.isbn+": "+find_book_title_with_isbn(book.isbn) }}
+                                </label>
+                            {% else %}
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{ book.isbn }}
+                                </label>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <nav class="nav justify-content-center">
+                        <a class="nav-link" href="#">
+                            <button type="submit" class="nav-link btn btn-secondary btn-sm"
+                                    name="delete">Remove from the list
+                            </button>
+                        </a>
+                    </nav>
+                </div>
+            </form>
         {% endif %}
     </div>
 {% endblock %}

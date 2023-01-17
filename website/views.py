@@ -35,7 +35,6 @@ def textbook():
             if "textbook-user-has" in request.form:
                 if not book:
                     new_isbn = Book(isbn=isbn, user_id=current_user.id, owning_status=1, receiving_status=0)
-
                     db.session.add(new_isbn)
                 # if the book already exist, change it to pending pairing state
                 else:
@@ -45,27 +44,46 @@ def textbook():
             else:
                 if not book:
                     new_isbn = Book(isbn=isbn, user_id=current_user.id, owning_status=0, receiving_status=0)
-
                     db.session.add(new_isbn)
                 # if the book already exist, change it to pending pairing state
                 else:
                     book.owning_status = 0
                     book.receiving_status = 0
             db.session.commit()
+        # mark the list of book ids as received
         elif "mark-receive" in request.form:
-            print(request.form.getlist('textbook-own'))
+            received = request.form.getlist('textbook-own')
+            for book_id in received:
+                book = Book.query.filter_by(id=book_id).first()
+                if book:
+                    book.receiving_status = 1
+            db.session.commit()
+        # delete the list of book ids from the Book database
         elif "delete" in request.form:
-            print(request.form.getlist('textbook-own'))
+            to_delete = request.form.getlist('textbook-own')
+
+            for book_id in to_delete:
+                book = Book.query.filter_by(id=book_id).first()
+                if book:
+                    db.session.delete(book)
+            db.session.commit()
         else:
             return "The isbn you entered is not correct, please try again"
     return render_template("textbook.html", user=current_user, active_page="textbook", textbook_page="pair")
 
 
-def check_if_isbn_is_in_database(isbn):
-    pass
-
 
 @views.route('/textbook_received/', methods=['GET', 'POST'])
 @login_required
 def textbook_received():
+    if "delete" in request.form:
+        to_delete = request.form.getlist('textbook-own')
+
+        for book_id in to_delete:
+            book = Book.query.filter_by(id=book_id).first()
+            if book:
+                db.session.delete(book)
+        db.session.commit()
     return render_template("textbook.html", user=current_user, active_page="textbook", textbook_page="received")
+
+
