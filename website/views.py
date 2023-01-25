@@ -34,21 +34,23 @@ def textbook():
             # add new textbook the user has
             if "textbook-user-has" in request.form:
                 if not book:
-                    new_isbn = Book(isbn=isbn, user_id=current_user.id, owning_status=1, receiving_status=0)
+                    new_isbn = Book(isbn=isbn, user_id=current_user.id, owning_status=1, receiving_status=0, group=str(2))
                     db.session.add(new_isbn)
                 # if the book already exist, change it to pending pairing state
                 else:
                     book.owning_status = 1
                     book.receiving_status = 0
+                    book.group = str(2)
             # add new textbook the user want
             else:
                 if not book:
-                    new_isbn = Book(isbn=isbn, user_id=current_user.id, owning_status=0, receiving_status=0)
+                    new_isbn = Book(isbn=isbn, user_id=current_user.id, owning_status=0, receiving_status=0, group=str(3))
                     db.session.add(new_isbn)
                 # if the book already exist, change it to pending pairing state
                 else:
                     book.owning_status = 0
                     book.receiving_status = 0
+                    book.group = str(3)
             db.session.commit()
         # mark the list of book ids as received
         elif "mark-receive" in request.form:
@@ -67,10 +69,27 @@ def textbook():
                 if book:
                     db.session.delete(book)
             db.session.commit()
+
+        # mark book as for donation
+        elif "donation" in request.form:
+            for_donation = request.form.getlist('textbook-own')
+
+            for book_id in for_donation:
+                book = Book.query.filter_by(id=book_id).first()
+                if book:
+                    book.group = 1
+            db.session.commit()
+        elif "exchange" in request.form:
+            for_donation = request.form.getlist('textbook-own')
+
+            for book_id in for_donation:
+                book = Book.query.filter_by(id=book_id).first()
+                if book:
+                    book.group = 2
+            db.session.commit()
         else:
             return "The isbn you entered is not correct, please try again"
     return render_template("textbook.html", user=current_user, active_page="textbook", textbook_page="pair")
-
 
 
 @views.route('/textbook_received/', methods=['GET', 'POST'])
@@ -85,5 +104,3 @@ def textbook_received():
                 db.session.delete(book)
         db.session.commit()
     return render_template("textbook.html", user=current_user, active_page="textbook", textbook_page="received")
-
-

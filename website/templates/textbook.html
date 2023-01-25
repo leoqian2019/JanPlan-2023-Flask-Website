@@ -43,11 +43,11 @@
                                        name="textbook-own">
                                 {% if find_book_title_with_isbn(book.isbn) != None %}
                                     <label class="form-check-label" for="flexCheckDefault">
-                                        {{ book.isbn+": "+find_book_title_with_isbn(book.isbn) }}
+                                        {{ book.isbn+": "+find_book_title_with_isbn(book.isbn)+" | "+convert_group_num(book.group) }}
                                     </label>
                                 {% else %}
                                     <label class="form-check-label" for="flexCheckDefault">
-                                        {{ book.isbn }}
+                                        {{ book.isbn+" | "+convert_group_num(book.group) }}
                                     </label>
                                 {% endif %}
                             {% endif %}
@@ -56,12 +56,17 @@
                         <nav class="nav justify-content-center">
                             <a class="nav-link" href="#">
                                 <button type="submit" class="nav-link btn btn-secondary btn-sm"
-                                        name="mark-receive">Mark as received
+                                        name="delete">Remove from the list
                                 </button>
                             </a>
                             <a class="nav-link" href="#">
                                 <button type="submit" class="nav-link btn btn-secondary btn-sm"
-                                        name="delete">Remove from the list
+                                        name="donation">Mark for donation
+                                </button>
+                            </a>
+                            <a class="nav-link" href="#">
+                                <button type="submit" class="nav-link btn btn-secondary btn-sm"
+                                        name="exchange">Mark for exchange
                                 </button>
                             </a>
                         </nav>
@@ -91,17 +96,22 @@
                                        name="textbook-own">
                                 {% if find_book_title_with_isbn(book.isbn) != None %}
                                     <label class="form-check-label" for="flexCheckDefault">
-                                        {{ book.isbn+": "+find_book_title_with_isbn(book.isbn) }}
+                                        {{ book.isbn+": "+find_book_title_with_isbn(book.isbn)+" | "+convert_group_num(book.group) }}
                                     </label>
                                 {% else %}
                                     <label class="form-check-label" for="flexCheckDefault">
-                                        {{ book.isbn }}
+                                        {{ book.isbn+" | "+convert_group_num(book.group) }}
                                     </label>
                                 {% endif %}
                                 </label>
                             {% endif %}
                         {% endfor %}
                         <nav class="nav justify-content-center">
+                            <a class="nav-link" href="#">
+                                <button type="submit" class="nav-link btn btn-secondary btn-sm"
+                                        name="mark-receive">Mark as received
+                                </button>
+                            </a>
                             <a class="nav-link" href="#">
                                 <button type="submit" class="nav-link btn btn-secondary btn-sm"
                                         name="delete">Remove from the list

@@ -9,6 +9,8 @@ class Book(db.Model):
     owning_status = db.Column(db.Integer)
     # 1 == received, 0 == not received
     receiving_status = db.Column(db.Integer)
+    # 1 == for donation, 2 == for exchange, 3 == for needed
+    group = db.Column(db.String(1), default=2)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
